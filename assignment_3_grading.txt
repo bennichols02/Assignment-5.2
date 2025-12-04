@@ -1,0 +1,161 @@
+Assignment 2 Grading:
+---------------------
+Student Group "group029" (Ben Nichols & Yuvrajsinh Maharaulji)
+Grade: 98/100, 98%
+
+Python test results:
+------------------------
+
+Results for controller_test.py:
+
+test_create_post (tests.controller_test.ControllerTest) ... ok
+test_create_search_blog (tests.controller_test.ControllerTest) ... ok
+test_delete_blog (tests.controller_test.ControllerTest) ... ok
+test_delete_post (tests.controller_test.ControllerTest) ... ok
+test_list_blogs (tests.controller_test.ControllerTest) ... ok
+test_list_posts (tests.controller_test.ControllerTest) ... ok
+test_login_logout (tests.controller_test.ControllerTest) ... ok
+test_retrieve_blogs (tests.controller_test.ControllerTest) ... ok
+test_retrieve_posts (tests.controller_test.ControllerTest) ... ok
+test_set_get_current_blog (tests.controller_test.ControllerTest) ... ok
+test_update_blog (tests.controller_test.ControllerTest) ... ok
+test_update_post (tests.controller_test.ControllerTest) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.001s
+
+OK
+
+Results for blog_test.py:
+
+test_blog_equality (tests.blog_test.BlogTest)
+Test blog equality based on all attributes. ... ok
+test_blog_equality_different_types (tests.blog_test.BlogTest)
+Test blog equality with non-Blog objects. ... ok
+test_blog_initial_state (tests.blog_test.BlogTest)
+Test that blog is initialized with correct attributes and empty posts. ... ok
+test_blog_str_representation (tests.blog_test.BlogTest)
+Test string representation of Blog. ... ok
+test_create_multiple_posts (tests.blog_test.BlogTest)
+Test creating multiple posts with sequential codes. ... ok
+test_create_post (tests.blog_test.BlogTest)
+Test creating a post with auto-incremented code. ... ok
+test_delete_nonexistent_post (tests.blog_test.BlogTest)
+Test deleting a post that doesn't exist. ... ok
+test_delete_post (tests.blog_test.BlogTest)
+Test deleting an existing post. ... ok
+test_list_empty_posts (tests.blog_test.BlogTest)
+Test listing posts when no posts exist. ... ok
+test_list_posts (tests.blog_test.BlogTest)
+Test listing posts in reverse chronological order. ... ok
+test_multiple_operations_integration (tests.blog_test.BlogTest)
+Integration test with multiple blog operations. ... ok
+test_post_auto_increment_after_deletion (tests.blog_test.BlogTest)
+Test that post codes continue auto-incrementing after deletions. ... ok
+test_retrieve_posts_by_keyword_in_text (tests.blog_test.BlogTest)
+Test retrieving posts by keyword found in text content. ... ok
+test_retrieve_posts_by_keyword_in_title (tests.blog_test.BlogTest)
+Test retrieving posts by keyword found in title. ... ok
+test_retrieve_posts_case_sensitive (tests.blog_test.BlogTest)
+Test that post retrieval is case-sensitive. ... ok
+test_retrieve_posts_no_matches (tests.blog_test.BlogTest)
+Test retrieving posts when no matches found. ... ok
+test_search_nonexistent_post (tests.blog_test.BlogTest)
+Test searching for a post that doesn't exist. ... ok
+test_search_post (tests.blog_test.BlogTest)
+Test searching for an existing post by code. ... ok
+test_update_nonexistent_post (tests.blog_test.BlogTest)
+Test updating a post that doesn't exist. ... ok
+test_update_post (tests.blog_test.BlogTest)
+Test updating an existing post's title and text. ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.001s
+
+OK
+
+Results for post_test.py:
+
+test_attribute_access (tests.post_test.PostTest)
+Test that post attributes can be accessed and modified. ... ok
+test_comprehensive_equality (tests.post_test.PostTest)
+Comprehensive equality test. ... ok
+test_creation (tests.post_test.PostTest)
+Test that a post is created with correct attributes and timestamps. ... ok
+test_creation_empty_fields (tests.post_test.PostTest)
+Test post creation with empty title and text. ... ok
+test_equality_different_code (tests.post_test.PostTest)
+Test that posts with different codes are not equal. ... ok
+test_equality_different_text (tests.post_test.PostTest)
+Test that posts with different text are not equal. ... ok
+test_equality_different_title (tests.post_test.PostTest)
+Test that posts with different titles are not equal. ... ok
+test_equality_same (tests.post_test.PostTest)
+Test that posts with same attributes are equal. ... ok
+test_equality_wrong_type (tests.post_test.PostTest)
+Test post equality with non-Post objects. ... ok
+test_initial_timestamps (tests.post_test.PostTest)
+Test that creation and update timestamps are equal initially. ... ok
+test_large_text (tests.post_test.PostTest)
+Test post with very large text content. ... ok
+test_multiple_posts_timestamps (tests.post_test.PostTest)
+Test that multiple posts have different timestamps. ... ok
+test_multiple_timestamp_updates (tests.post_test.PostTest)
+Test multiple timestamp updates. ... ok
+test_none_values (tests.post_test.PostTest)
+Test post behavior with None values. ... ok
+test_repr (tests.post_test.PostTest)
+Test the repr representation of a post. ... ok
+test_str_repr (tests.post_test.PostTest)
+Test the string representation of a post. ... ok
+test_str_repr_consistency (tests.post_test.PostTest)
+Test that str and repr are consistent. ... ok
+test_str_short_text (tests.post_test.PostTest)
+Test string representation with short text. ... ok
+test_timestamps_type (tests.post_test.PostTest)
+Test that timestamps are datetime objects. ... ok
+test_update_timestamp (tests.post_test.PostTest)
+Test that update timestamp changes when updated. ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.006s
+
+OK
+
+
+Summary:
+Passed tests: 52
+Failed tests: 0
+
+Unit tests: 15/15 points, exceptionally thorough.
+Controller tests: 60/60 points.
+
+Version Control (git log):
+--------------------------
+f2ae61e	Benjamin Nichols	Thu Nov 6 20:41:58 2025 -0800	Added string representation, formatting, edge cases and comprehensive equality testing in post_test.py
+d7b9003	Benjamin Nichols	Thu Nov 6 20:39:48 2025 -0800	Implemented Basic creation, equality, timestamp functionality and validation test in post_test.py
+19f1ece	Yuvrajsinh Maharaulji	Thu Nov 6 20:26:13 2025 -0800	add edge-case tests for basic CRUD operations, add listing and search functionality tests and add equality and integration tests in blog_test.py
+546635d	Benjamin Nichols	Thu Nov 6 20:19:33 2025 -0800	In controller.py, implemented create, search, retrieve, update, delete, and list post functions
+5483c06	Benjamin Nichols	Thu Nov 6 20:16:04 2025 -0800	Added update_timestamp to post.py
+08a20ea	Yuvrajsinh Maharaulji	Thu Nov 6 20:10:54 2025 -0800	Implemented retrieve, update, delete, list blog + safey checks in controller.py. Also add select/unset current blog
+1e31f30	Yuvrajsinh Maharaulji	Thu Nov 6 20:06:31 2025 -0800	login/logout and create_blog() and search_blog with login guard
+428a63b	Yuvrajsinh Maharaulji	Thu Nov 6 20:04:43 2025 -0800	Comprehensive unit-test suite for Blog post management
+7631a33	Yuvrajsinh Maharaulji	Thu Nov 6 19:57:00 2025 -0800	Implemented create, search, retrieve, update, delete, list function(newest -> oldest) for post in blog.py.
+a31f717	Yuvrajsinh Maharaulji	Thu Nov 6 19:52:20 2025 -0800	Added repr, str, and __eq__ for new Blog objects
+1d7537a	Yuvrajsinh Maharaulji	Thu Nov 6 19:48:50 2025 -0800	Created Blog skeleton with id,name,url,email, empty post list
+7bf4be0	Benjamin Nichols	Thu Nov 6 19:44:44 2025 -0800	added repr, eq, and str to define the equality and create developer and user friendly strings
+887fd02	Benjamin Nichols	Thu Nov 6 19:33:21 2025 -0800	Added unittest for post creation, equality and str/repr checks
+3da0d75	Benjamin Nichols	Thu Nov 6 19:23:02 2025 -0800	Created post model with __init__ including code, title, text, and timestamps
+3384998	Yuvrajsinh Maharaulji	Thu Nov 6 19:03:44 2025 -0800	Created blog_test and post_test files
+724c18a	Ben Nichols	Tue Oct 28 14:04:49 2025 -0700	Created new blog, controller, and post python files
+6380b4c	Yuvrajsinh Jaydeepsinh Maharaulji	Tue Oct 28 13:50:49 2025 -0700	Added student info file
+7477c59	Yuvrajsinh Jaydeepsinh Maharaulji	Tue Oct 28 13:48:15 2025 -0700	Merge branch 'main' of https://gitlab.csc.uvic.ca/courses/2025091/SENG265_COSI/teams/group029
+ded0d40	Yuvrajsinh Jaydeepsinh Maharaulji	Tue Oct 28 13:41:24 2025 -0700	Added student info file
+8795f5b	Ben Nichols	Tue Oct 28 13:30:22 2025 -0700	added id file
+959d076	Roberto Bittencourt	Tue Oct 21 14:14:13 2025 -0700	Added controller tests and configuration files
+c025491	Roberto Bittencourt	Tue Oct 21 21:08:52 2025 +0000	Initial commit
+
+Excellent commit log, detailing your collaborative progress. 5/5 points.
+
+Modularization: 8/10 points, some logic should be shifted into post.py. 
+Documentation: 10/10 points.

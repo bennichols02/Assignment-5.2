@@ -1,0 +1,103 @@
+Assignment 4 Grading:
+---------------------
+Student Group "group029" (Ben Nichols & Yuvrajsinh Maharaulji)
+Grade: 100/100, 100%
+
+Python test results:
+------------------------
+
+Results for controller_test.py:
+
+test_create_post (tests.controller_test.ControllerTest) ... ok
+test_create_search_blog (tests.controller_test.ControllerTest) ... ok
+test_delete_blog (tests.controller_test.ControllerTest) ... ok
+test_delete_post (tests.controller_test.ControllerTest) ... ok
+test_list_blogs (tests.controller_test.ControllerTest) ... ok
+test_list_posts (tests.controller_test.ControllerTest) ... ok
+test_login_logout (tests.controller_test.ControllerTest) ... ok
+test_retrieve_blogs (tests.controller_test.ControllerTest) ... ok
+test_retrieve_posts (tests.controller_test.ControllerTest) ... ok
+test_set_get_current_blog (tests.controller_test.ControllerTest) ... ok
+test_update_blog (tests.controller_test.ControllerTest) ... ok
+test_update_post (tests.controller_test.ControllerTest) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.002s
+
+OK
+
+Results for integration_test.py:
+
+test_create_post (tests.integration_test.IntegrationTest) ... ok
+test_create_search_blog (tests.integration_test.IntegrationTest) ... ok
+test_delete_blog (tests.integration_test.IntegrationTest) ... ok
+test_delete_post (tests.integration_test.IntegrationTest) ... ok
+test_list_blogs (tests.integration_test.IntegrationTest) ... ok
+test_list_posts (tests.integration_test.IntegrationTest) ... ok
+test_login_logout (tests.integration_test.IntegrationTest) ... ok
+test_retrieve_blogs (tests.integration_test.IntegrationTest) ... ok
+test_retrieve_posts (tests.integration_test.IntegrationTest) ... ok
+test_set_get_current_blog (tests.integration_test.IntegrationTest) ... ok
+test_update_blog (tests.integration_test.IntegrationTest) ... ok
+test_update_post (tests.integration_test.IntegrationTest) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.523s
+
+OK
+
+
+Summary:
+Passed tests: 24
+Failed tests: 0
+
+Controller tests: 24/24 points.
+Integration tests: 48/48 points.
+
+Version Control (git log):
+--------------------------
+2517490	Ben Nichols	Sun Nov 23 17:17:36 2025 -0800	Final project completion with all components integrated and all tests passing
+b782495	Ben Nichols	Sun Nov 23 17:12:08 2025 -0800	Complete integration test and ensured that all tests are passing
+c6cf691	Yuvrajsinh Maharaulji	Sun Nov 23 17:06:56 2025 -0800	Added comprehensive code comments and documentation to all major classes
+4dfc0f5	Yuvrajsinh Maharaulji	Sun Nov 23 16:57:36 2025 -0800	Implement user authentication with file loading and password hashing
+0b6a551	Ben Nichols	Sun Nov 23 16:51:15 2025 -0800	Added pickle file persistence to PostDAOPickle
+d8f69ff	Yuvrajsinh Maharaulji	Sun Nov 23 16:46:05 2025 -0800	Add JSON file persistence to BlogDAOJSON
+ce43b3e	Yuvrajsinh Maharaulji	Sun Nov 23 16:39:52 2025 -0800	Complete Controller blog operations with exception handling
+c9f3bc0	Ben Nichols	Sun Nov 23 16:36:08 2025 -0800	Enhanced post class with update method and string representations
+bc3c3bc	Benjamin Nichols	Sat Nov 22 12:48:56 2025 -0800	Integrated PostDAOPickle into blog class
+9ebe81f	Benjamin Nichols	Sat Nov 22 12:46:43 2025 -0800	Implemented PostDAOPickle in memory CRUD operations
+ff88b6e	Yuvrajsinh Maharaulji	Sat Nov 22 12:41:38 2025 -0800	Add basic Controller structure with blog operations
+4cb913a	Yuvrajsinh Maharaulji	Sat Nov 22 12:40:23 2025 -0800	Implement BlogDAOJSON with in-memory CRUD operations
+d86691a	Yuvrajsinh Maharaulji	Sat Nov 22 12:38:27 2025 -0800	Implement Blog JSON decoder for deserialization
+7c2b117	Benjamin Nichols	Sat Nov 22 12:36:25 2025 -0800	Implemented blogJSON encoder for serialization
+118821e	Benjamin Nichols	Sat Nov 22 11:13:43 2025 -0800	Created new dao files for assignment 4
+461f682	Yuvrajsinh Maharaulji	Sat Nov 22 11:05:46 2025 -0800	Added starter files for Assignment 4
+3cb53c2	Jonah Carroll Dullaert	Thu Nov 13 11:20:24 2025 -0800	Assignment 3 feedback. Send me an email if you have any questions.
+f2ae61e	Benjamin Nichols	Thu Nov 6 20:41:58 2025 -0800	Added string representation, formatting, edge cases and comprehensive equality testing in post_test.py
+d7b9003	Benjamin Nichols	Thu Nov 6 20:39:48 2025 -0800	Implemented Basic creation, equality, timestamp functionality and validation test in post_test.py
+19f1ece	Yuvrajsinh Maharaulji	Thu Nov 6 20:26:13 2025 -0800	add edge-case tests for basic CRUD operations, add listing and search functionality tests and add equality and integration tests in blog_test.py
+546635d	Benjamin Nichols	Thu Nov 6 20:19:33 2025 -0800	In controller.py, implemented create, search, retrieve, update, delete, and list post functions
+5483c06	Benjamin Nichols	Thu Nov 6 20:16:04 2025 -0800	Added update_timestamp to post.py
+08a20ea	Yuvrajsinh Maharaulji	Thu Nov 6 20:10:54 2025 -0800	Implemented retrieve, update, delete, list blog + safey checks in controller.py. Also add select/unset current blog
+1e31f30	Yuvrajsinh Maharaulji	Thu Nov 6 20:06:31 2025 -0800	login/logout and create_blog() and search_blog with login guard
+428a63b	Yuvrajsinh Maharaulji	Thu Nov 6 20:04:43 2025 -0800	Comprehensive unit-test suite for Blog post management
+7631a33	Yuvrajsinh Maharaulji	Thu Nov 6 19:57:00 2025 -0800	Implemented create, search, retrieve, update, delete, list function(newest -> oldest) for post in blog.py.
+a31f717	Yuvrajsinh Maharaulji	Thu Nov 6 19:52:20 2025 -0800	Added repr, str, and __eq__ for new Blog objects
+1d7537a	Yuvrajsinh Maharaulji	Thu Nov 6 19:48:50 2025 -0800	Created Blog skeleton with id,name,url,email, empty post list
+7bf4be0	Benjamin Nichols	Thu Nov 6 19:44:44 2025 -0800	added repr, eq, and str to define the equality and create developer and user friendly strings
+887fd02	Benjamin Nichols	Thu Nov 6 19:33:21 2025 -0800	Added unittest for post creation, equality and str/repr checks
+3da0d75	Benjamin Nichols	Thu Nov 6 19:23:02 2025 -0800	Created post model with __init__ including code, title, text, and timestamps
+3384998	Yuvrajsinh Maharaulji	Thu Nov 6 19:03:44 2025 -0800	Created blog_test and post_test files
+724c18a	Ben Nichols	Tue Oct 28 14:04:49 2025 -0700	Created new blog, controller, and post python files
+6380b4c	Yuvrajsinh Jaydeepsinh Maharaulji	Tue Oct 28 13:50:49 2025 -0700	Added student info file
+7477c59	Yuvrajsinh Jaydeepsinh Maharaulji	Tue Oct 28 13:48:15 2025 -0700	Merge branch 'main' of https://gitlab.csc.uvic.ca/courses/2025091/SENG265_COSI/teams/group029
+ded0d40	Yuvrajsinh Jaydeepsinh Maharaulji	Tue Oct 28 13:41:24 2025 -0700	Added student info file
+8795f5b	Ben Nichols	Tue Oct 28 13:30:22 2025 -0700	added id file
+959d076	Roberto Bittencourt	Tue Oct 21 14:14:13 2025 -0700	Added controller tests and configuration files
+c025491	Roberto Bittencourt	Tue Oct 21 21:08:52 2025 +0000	Initial commit
+
+Solid commit log, detailing your collaborative progress. 8/8 points.
+
+Modularization: 10/10 points.
+Documentation: 10/10 points.
+Other remarks: Excellently done.
