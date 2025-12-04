@@ -4,11 +4,13 @@ from blogging.controller import Controller
 from blogging.exception.invalid_login_exception import InvalidLoginException
 from blogging.exception.duplicate_login_exception import DuplicateLoginException
 from blogging.exception.invalid_logout_exception import InvalidLogoutException
+from blogging.exception.illegal_operation_exception import IllegalOperationException
+from blogging.exception.illegal_access_exception import IllegalAccessException
 from blogging.gui.search_blog_dialog import SearchBlogDialog
 from blogging.gui.create_blog_dialog import CreateBlogDialog
-from blogging.gui.choose_current_blog_dialog import ChooseCurrentBlogDialog
 from blogging.gui.edit_blog_dialog import EditBlogDialog
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QIntValidator
 from PyQt6.QtWidgets import (
     QApplication,
     QFormLayout,
@@ -41,10 +43,10 @@ class BloggingGUI(QMainWindow):
 
         self.login_page = LoginPage(self.handle_login)
         self.home_page = HomePage(
+            self.controller,
             self.handle_logout,
             self.open_search_dialog,
             self.open_create_dialog,
-            self.open_choose_blog_dialog,
             self.open_edit_dialog,
         )
         self.stacked.addWidget(self.login_page)
@@ -96,16 +98,6 @@ class BloggingGUI(QMainWindow):
         # Keep a reference when using non-blocking show
         self.create_dialog = CreateBlogDialog(self.controller, self)
         self.create_dialog.show()
-
-    def open_choose_blog_dialog(self):
-        '''Open modal chooser and refresh current blog label when it closes.'''
-        dialog = ChooseCurrentBlogDialog(self.controller, self)
-        if dialog.exec():
-            try:
-                current = self.controller.get_current_blog()
-            except Exception:
-                current = None
-            self.home_page.update_current_blog(current)
 
     def open_edit_dialog(self):
         '''Open non-modal editor for the current blog context.'''
@@ -200,12 +192,12 @@ class LoginPage(QWidget):
 
 class HomePage(QWidget):
     '''Landing page after login with navigation actions.'''
-    def __init__(self, on_logout, on_search_blog, on_create_blog, on_choose_blog, on_edit_blog):
+    def __init__(self, controller, on_logout, on_search_blog, on_create_blog, on_edit_blog):
         super().__init__()
+        self.controller = controller
         self.on_logout = on_logout
         self.on_search_blog = on_search_blog
         self.on_create_blog = on_create_blog
-        self.on_choose_blog = on_choose_blog
         self.on_edit_blog = on_edit_blog
         self._build_ui()
 
@@ -219,17 +211,31 @@ class HomePage(QWidget):
         self.welcome_label.setStyleSheet("font-size: 18px; font-weight: 600;")
 
         self.current_blog_label = QLabel("Current blog: None")
-        self.current_blog_label.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        self.current_blog_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.current_blog_label.setStyleSheet("color: #555;")
 
-        header_row = QHBoxLayout()
+        header_row = QVBoxLayout()
         header_row.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        choose_button = QPushButton("Change current blog")
+
+        choose_button = QPushButton("Set current blog")
         choose_button.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        choose_button.clicked.connect(self.on_choose_blog)
+        choose_button.clicked.connect(self._handle_set_current_blog)
+
+        input_row = QHBoxLayout()
+        input_row.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.current_blog_input = QLineEdit()
+        self.current_blog_input.setValidator(QIntValidator(0, 1_000_000))
+        self.current_blog_input.setPlaceholderText("Blog ID")
+        self.current_blog_input.setFixedWidth(120)
+        self.current_blog_input.returnPressed.connect(self._handle_set_current_blog)
+
+        input_row.addWidget(self.current_blog_input)
+        input_row.addSpacing(8)
+        input_row.addWidget(choose_button)
+
         header_row.addWidget(self.current_blog_label)
-        header_row.addSpacing(12)
-        header_row.addWidget(choose_button)
+        header_row.addSpacing(6)
+        header_row.addLayout(input_row)
 
         button_row = QVBoxLayout()
         button_row.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -315,6 +321,27 @@ class HomePage(QWidget):
         self.edit_button.setToolTip(
             "Create, update, retrieve, delete, and list all posts in the current blog."
         )
+
+    def _handle_set_current_blog(self):
+        '''Read the typed blog ID and set it as current via the controller.'''
+        self.status_label.setText("")
+        id_text = self.current_blog_input.text().strip()
+        if not id_text:
+            self.status_label.setText("Enter a blog ID first.")
+            return
+
+        blog_id = int(id_text)
+        try:
+            self.controller.set_current_blog(blog_id)
+            blog = self.controller.get_current_blog()
+            self.update_current_blog(blog)
+            self.status_label.setText("")
+        except (IllegalOperationException, IllegalAccessException) as exc:
+            self.status_label.setText(str(exc))
+        except Exception:
+            self.status_label.setText("Unable to set current blog.")
+        finally:
+            self.current_blog_input.clear()
 
 
 def main():
