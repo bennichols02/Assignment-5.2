@@ -129,7 +129,12 @@ class SearchPostsDialog(QDialog):
 
         lines = []
         for post in posts:
-            lines.append(f"Code: {getattr(post, 'code', '')} | Title: {getattr(post, 'title', '')}")
+            lines.append(f"Post: {getattr(post, 'code', '')} | Title: {getattr(post, 'title', '')}")
+            created = getattr(post, 'creation_time', None)
+            updated = getattr(post, 'update_time', None)
+            created_txt = created if isinstance(created, str) else getattr(created, 'isoformat', lambda: str(created))()
+            updated_txt = updated if isinstance(updated, str) else getattr(updated, 'isoformat', lambda: str(updated))()
+            lines.append(f"Created - {created_txt}, Changed - {updated_txt}")
             lines.append(getattr(post, 'text', ''))
             lines.append("-" * 50)
         self.results.setPlainText("\n".join(lines))

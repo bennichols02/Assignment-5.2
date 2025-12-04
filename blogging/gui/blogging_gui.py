@@ -219,23 +219,21 @@ class HomePage(QWidget):
 
         choose_button = QPushButton("Set current blog")
         choose_button.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        choose_button.setMinimumWidth(170)
+        choose_button.setMinimumHeight(42)
         choose_button.clicked.connect(self._handle_set_current_blog)
 
-        input_row = QHBoxLayout()
-        input_row.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.current_blog_input = QLineEdit()
         self.current_blog_input.setValidator(QIntValidator(0, 1_000_000))
         self.current_blog_input.setPlaceholderText("Blog ID")
-        self.current_blog_input.setFixedWidth(120)
+        self.current_blog_input.setFixedWidth(170)
         self.current_blog_input.returnPressed.connect(self._handle_set_current_blog)
-
-        input_row.addWidget(self.current_blog_input)
-        input_row.addSpacing(8)
-        input_row.addWidget(choose_button)
 
         header_row.addWidget(self.current_blog_label)
         header_row.addSpacing(6)
-        header_row.addLayout(input_row)
+        header_row.addWidget(self.current_blog_input, alignment=Qt.AlignmentFlag.AlignCenter)
+        header_row.addSpacing(6)
+        header_row.addWidget(choose_button, alignment=Qt.AlignmentFlag.AlignCenter)
 
         button_row = QVBoxLayout()
         button_row.setAlignment(Qt.AlignmentFlag.AlignCenter)
