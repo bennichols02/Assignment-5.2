@@ -13,6 +13,7 @@ from PyQt6.QtWidgets import (
 
 
 class SearchPostsDialog(QDialog):
+    '''Dialog for searching or listing posts within the current blog.'''
     def __init__(self, controller, parent=None):
         super().__init__(parent)
         self.controller = controller
@@ -21,6 +22,7 @@ class SearchPostsDialog(QDialog):
         self._build_ui()
 
     def _build_ui(self):
+        '''Build the search input row, status label, and results area.'''
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
@@ -84,6 +86,7 @@ class SearchPostsDialog(QDialog):
         self.setLayout(layout)
 
     def _handle_search(self):
+        '''Search posts for a text fragment when the user submits the field.'''
         term = self.search_input.text().strip()
         if not term:
             self.status_label.setText("Enter text to search.")
@@ -103,6 +106,7 @@ class SearchPostsDialog(QDialog):
         self._populate_results(posts, empty_message="No posts contain that text.")
 
     def _handle_list_all(self):
+        '''List every post in the current blog.'''
         try:
             posts = self.controller.list_posts()
         except (IllegalAccessException, NoCurrentBlogException) as exc:
@@ -117,6 +121,7 @@ class SearchPostsDialog(QDialog):
         self._populate_results(posts, empty_message="No posts in this blog.")
 
     def _populate_results(self, posts, empty_message):
+        '''Render posts into the text area or show an empty-state message.'''
         self.results.clear()
         if not posts:
             self.status_label.setText(empty_message)

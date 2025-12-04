@@ -4,7 +4,6 @@ from PyQt6.QtWidgets import (
     QLabel,
     QGridLayout,
     QHBoxLayout,
-    QMessageBox,
     QPushButton,
     QVBoxLayout,
 )
@@ -12,6 +11,7 @@ from blogging.gui.post_manager_dialog import PostManagerDialog
 
 
 class EditBlogDialog(QDialog):
+    '''Container for post management and search tools tied to the current blog.'''
     def __init__(self, controller, current_blog, parent=None):
         super().__init__(parent)
         self.controller = controller
@@ -21,6 +21,7 @@ class EditBlogDialog(QDialog):
         self._build_ui()
 
     def _build_ui(self):
+        '''Layout buttons for post management/search and close action.'''
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
@@ -76,20 +77,24 @@ class EditBlogDialog(QDialog):
         self.setLayout(layout)
 
     def _current_blog_text(self):
+        '''Return the subtitle text describing the active blog (if any).'''
         if not self.current_blog:
             return "No current blog selected."
         return f"{self.current_blog.name} (ID: {self.current_blog.id})"
 
     def _header_text(self):
+        '''Return the header text based on whether a blog is selected.'''
         if not self.current_blog:
             return "Edit Blog"
         return f"Editing: {self.current_blog.name}"
 
     def _open_post_manager(self):
+        '''Open the post manager dialog (non-modal).'''
         self.post_manager_dialog = PostManagerDialog(self.controller, self)
         self.post_manager_dialog.show()
 
     def _open_search_posts(self):
+        '''Open the search posts dialog (non-modal).'''
         from blogging.gui.search_posts_dialog import SearchPostsDialog
 
         self.search_posts_dialog = SearchPostsDialog(self.controller, self)

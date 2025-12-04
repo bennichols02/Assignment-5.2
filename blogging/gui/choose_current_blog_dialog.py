@@ -1,6 +1,5 @@
 from blogging.exception.illegal_access_exception import IllegalAccessException
 from blogging.exception.illegal_operation_exception import IllegalOperationException
-from blogging.exception.no_current_blog_exception import NoCurrentBlogException
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIntValidator
 from PyQt6.QtWidgets import (
@@ -14,6 +13,7 @@ from PyQt6.QtWidgets import (
 
 
 class ChooseCurrentBlogDialog(QDialog):
+    '''Modal dialog for selecting which blog is "current" by ID.'''
     def __init__(self, controller, parent=None):
         super().__init__(parent)
         self.controller = controller
@@ -22,6 +22,7 @@ class ChooseCurrentBlogDialog(QDialog):
         self._build_ui()
 
     def _build_ui(self):
+        '''Build layout for entering a blog ID and confirming selection.'''
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
@@ -54,6 +55,7 @@ class ChooseCurrentBlogDialog(QDialog):
         self.setLayout(layout)
 
     def _handle_set_current(self):
+        '''Validate input and attempt to set the current blog via controller.'''
         self.status_label.setText("")
         id_text = self.id_input.text().strip()
         if not id_text:

@@ -25,6 +25,7 @@ from PyQt6.QtWidgets import (
 
 
 class BloggingGUI(QMainWindow):
+    '''Main window wiring together login and home views for the GUI workflow.'''
     def __init__(self):
         super().__init__()
         # set autosave to True to ensure persistence is working
@@ -51,6 +52,7 @@ class BloggingGUI(QMainWindow):
         self.stacked.setCurrentWidget(self.login_page)
 
     def handle_login(self, username: str, password: str):
+        '''Attempt login and swap to the home page on success.'''
         self.login_page.set_status("")
         if not username or not password:
             self.login_page.set_status("Enter a username and password.")
@@ -71,6 +73,7 @@ class BloggingGUI(QMainWindow):
         self.stacked.setCurrentWidget(self.home_page)
 
     def handle_logout(self):
+        '''Logout and return to the login page.'''
         try:
             self.controller.logout()
         except InvalidLogoutException:
@@ -83,16 +86,19 @@ class BloggingGUI(QMainWindow):
         self.login_page.set_status("Logged out.")
 
     def open_search_dialog(self):
+        '''Open non-modal blog search dialog.'''
         # Keep a reference when using non-blocking show
         self.search_dialog = SearchBlogDialog(self.controller, self)
         self.search_dialog.show()
 
     def open_create_dialog(self):
+        '''Open non-modal blog manager dialog.'''
         # Keep a reference when using non-blocking show
         self.create_dialog = CreateBlogDialog(self.controller, self)
         self.create_dialog.show()
 
     def open_choose_blog_dialog(self):
+        '''Open modal chooser and refresh current blog label when it closes.'''
         dialog = ChooseCurrentBlogDialog(self.controller, self)
         if dialog.exec():
             try:
@@ -102,6 +108,7 @@ class BloggingGUI(QMainWindow):
             self.home_page.update_current_blog(current)
 
     def open_edit_dialog(self):
+        '''Open non-modal editor for the current blog context.'''
         try:
             current = self.controller.get_current_blog()
         except Exception:
@@ -113,12 +120,14 @@ class BloggingGUI(QMainWindow):
 
 
 class LoginPage(QWidget):
+    '''Simple login form shown on startup.'''
     def __init__(self, on_login):
         super().__init__()
         self.on_login = on_login
         self._build_ui()
 
     def _build_ui(self):
+        '''Compose the login form layout.'''
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -177,6 +186,7 @@ class LoginPage(QWidget):
         self.setLayout(outer)
 
     def _emit_login(self):
+        '''Collect credentials and pass them to the callback.'''
         username = self.username_input.text().strip()
         password = self.password_input.text()
         self.on_login(username, password)
@@ -189,6 +199,7 @@ class LoginPage(QWidget):
 
 
 class HomePage(QWidget):
+    '''Landing page after login with navigation actions.'''
     def __init__(self, on_logout, on_search_blog, on_create_blog, on_choose_blog, on_edit_blog):
         super().__init__()
         self.on_logout = on_logout
@@ -199,6 +210,7 @@ class HomePage(QWidget):
         self._build_ui()
 
     def _build_ui(self):
+        '''Compose the home view layout and buttons.'''
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -283,12 +295,14 @@ class HomePage(QWidget):
         self.setLayout(layout)
 
     def set_username(self, username: str):
+        '''Update welcome banner with the active username.'''
         self.welcome_label.setText(f"Welcome, {username}")
 
     def set_status(self, message: str):
         self.status_label.setText(message)
 
     def update_current_blog(self, blog):
+        '''Reflect the selected blog in the UI and toggle edit availability.'''
         if not blog:
             self.current_blog_label.setText("Current blog selected: None")
             self.edit_button.setEnabled(False)

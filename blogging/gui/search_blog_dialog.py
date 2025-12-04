@@ -13,6 +13,7 @@ from PyQt6.QtWidgets import (
 
 
 class SearchBlogDialog(QDialog):
+    '''Dialog for finding blogs by ID, name, or listing all.'''
     def __init__(self, controller, parent=None):
         super().__init__(parent)
         self.controller = controller
@@ -21,6 +22,7 @@ class SearchBlogDialog(QDialog):
         self._build_ui()
 
     def _build_ui(self):
+        '''Construct the search controls and results table.'''
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
@@ -106,6 +108,7 @@ class SearchBlogDialog(QDialog):
         self.setLayout(layout)
 
     def _handle_search_by_id(self):
+        '''Search for a single blog by its numeric ID.'''
         self.status_label.setText("")
         self._clear_table()
         id_text = self.id_input.text().strip()
@@ -133,6 +136,7 @@ class SearchBlogDialog(QDialog):
         self._schedule_reset_input(self.id_input)
 
     def _handle_search_by_phrase(self):
+        '''Search for blogs whose name contains the given phrase.'''
         self.status_label.setText("")
         self._clear_table()
         phrase = self.phrase_input.text().strip()
@@ -158,6 +162,7 @@ class SearchBlogDialog(QDialog):
         self._schedule_reset_input(self.phrase_input)
 
     def _handle_list_all(self):
+        '''List all blogs currently registered.'''
         self.status_label.setText("")
         self._clear_table()
         try:
@@ -177,6 +182,7 @@ class SearchBlogDialog(QDialog):
         self._schedule_reset_input()
 
     def _show_results(self, blogs):
+        '''Populate the table with the provided blog rows.'''
         self.model.setRowCount(0)
         for blog in blogs:
             row = [
@@ -190,6 +196,7 @@ class SearchBlogDialog(QDialog):
             self.model.appendRow(row)
 
     def _clear_table(self):
+        '''Remove all rows from the results table.'''
         self.model.setRowCount(0)
 
     def _schedule_reset_input(self, target_input=None):

@@ -10,13 +10,12 @@ from PyQt6.QtWidgets import (
     QLineEdit,
     QMessageBox,
     QPushButton,
-    QSpacerItem,
-    QSizePolicy,
     QVBoxLayout,
 )
 
 
 class CreateBlogDialog(QDialog):
+    '''Dialog to create, update, or delete blogs from the GUI.'''
     def __init__(self, controller, parent=None):
         super().__init__(parent)
         self.controller = controller
@@ -25,6 +24,7 @@ class CreateBlogDialog(QDialog):
         self._build_ui()
 
     def _build_ui(self):
+        '''Compose the form and action buttons for blog CRUD.'''
         outer = QVBoxLayout()
         outer.setAlignment(Qt.AlignmentFlag.AlignTop)
 
@@ -117,6 +117,7 @@ class CreateBlogDialog(QDialog):
         self.setLayout(outer)
 
     def _handle_create(self):
+        '''Create a blog when the ID is free and fields are populated.'''
         self.status_label.setStyleSheet("color: #b00020;")
         self.status_label.setText("")
 
@@ -157,6 +158,7 @@ class CreateBlogDialog(QDialog):
         self._clear_inputs()
 
     def _handle_update(self):
+        '''Update an existing blog's attributes.'''
         self.status_label.setStyleSheet("color: #b00020;")
         self.status_label.setText("")
 
@@ -184,6 +186,7 @@ class CreateBlogDialog(QDialog):
         self._clear_inputs()
 
     def _handle_delete(self):
+        '''Delete a blog after confirming the ID exists and user confirms.'''
         self.status_label.setStyleSheet("color: #b00020;")
         self.status_label.setText("")
 
@@ -227,6 +230,7 @@ class CreateBlogDialog(QDialog):
         self._clear_inputs()
 
     def _clear_inputs(self):
+        '''Reset inputs and existing labels to defaults.'''
         self.id_input.clear()
         self.name_input.clear()
         self.url_input.clear()
@@ -235,6 +239,7 @@ class CreateBlogDialog(QDialog):
         self._set_existing("-", "-", "-")
 
     def _populate_existing(self):
+        '''Show existing blog data (if any) beside the inputs while typing an ID.'''
         id_text = self.id_input.text().strip()
         if not id_text:
             self._set_existing("-", "-", "-")
