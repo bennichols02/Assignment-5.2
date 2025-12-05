@@ -27,8 +27,18 @@ from PyQt6.QtWidgets import (
 
 
 class BloggingGUI(QMainWindow):
-    '''Main window wiring together login and home views for the GUI workflow.'''
+    '''
+    Primary window of the blogging system GUI application.
+    Manages the transition between login screen and main application interface
+    using a stacked widget layout. Coordinates user interactions with the
+    underlying controller for all blogging operations.
+    '''
     def __init__(self):
+        """ 
+        Initializes the main application window with default settings.
+        Sets up persistence configuration, controller instance, and prepares
+        the user interface components.
+        """
         super().__init__()
         # set autosave to True to ensure persistence is working
         self.configuration = Configuration()
@@ -54,7 +64,10 @@ class BloggingGUI(QMainWindow):
         self.stacked.setCurrentWidget(self.login_page)
 
     def handle_login(self, username: str, password: str):
-        '''Attempt login and swap to the home page on success.'''
+        '''Processes user login attempt using provided credentials.
+        Validates credentials through the controller and switches to home
+        page on successful authentication. Displays appropriate error messages
+        for invalid credentials or duplicate login attempts.'''
         self.login_page.set_status("")
         if not username or not password:
             self.login_page.set_status("Enter a username and password.")
@@ -75,7 +88,9 @@ class BloggingGUI(QMainWindow):
         self.stacked.setCurrentWidget(self.home_page)
 
     def handle_logout(self):
-        '''Logout and return to the login page.'''
+        '''Terminates the current user session and returns to login screen.
+        Clears user-specific data from the controller and resets the
+        interface to its initial state.'''
         try:
             self.controller.logout()
         except InvalidLogoutException:
@@ -88,13 +103,17 @@ class BloggingGUI(QMainWindow):
         self.login_page.set_status("Logged out.")
 
     def open_search_dialog(self):
-        '''Open non-modal blog search dialog.'''
+        '''Opens the blog search dialog for finding and viewing blogs.
+        The dialog operates in non-modal mode, allowing users to interact
+        with other parts of the application simultaneously.'''
         # Keep a reference when using non-blocking show
         self.search_dialog = SearchBlogDialog(self.controller, self)
         self.search_dialog.show()
 
     def open_create_dialog(self):
-        '''Open non-modal blog manager dialog.'''
+        '''Opens the blog management dialog for creating, updating, and
+        deleting blogs. Provides comprehensive blog administration
+        functionality in a dedicated interface..'''
         # Keep a reference when using non-blocking show
         self.create_dialog = CreateBlogDialog(self.controller, self)
         self.create_dialog.show()
