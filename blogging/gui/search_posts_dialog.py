@@ -13,8 +13,12 @@ from PyQt6.QtWidgets import (
 
 
 class SearchPostsDialog(QDialog):
-    '''Dialog for searching or listing posts within the current blog.'''
+    '''Provides streamlined access to post search functionality with real-time
+    results displayed in a formatted text area. Supports both targeted
+    text-based searching and comprehensive post listing with detailed
+    metadata presentation including creation and modification timestamps.'''
     def __init__(self, controller, parent=None):
+        '''Initializes the post search dialog with controller integration.'''
         super().__init__(parent)
         self.controller = controller
         self.setWindowTitle("Search Posts")
@@ -22,14 +26,19 @@ class SearchPostsDialog(QDialog):
         self._build_ui()
 
     def _build_ui(self):
-        '''Build the search input row, status label, and results area.'''
+        '''Organizes functionality into clear sections for search input,
+        action execution, and results presentation. Features a responsive
+        layout that adapts to different content volumes while maintaining
+        clear visual hierarchy and user guidance.'''
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
+    # Dialog title with prominent styling
         title = QLabel("Search Posts in Current Blog")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title.setStyleSheet("font-size: 18px; font-weight: 600;")
 
+        # Search input row with integrated action buttons
         input_row = QHBoxLayout()
         input_row.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -55,25 +64,35 @@ class SearchPostsDialog(QDialog):
         input_row.addSpacing(8)
         input_row.addWidget(list_all_button)
 
+        # Dialog completion button
+
         done_button = QPushButton("Done")
         done_button.setAutoDefault(False)
         done_button.setMinimumWidth(120)
         done_button.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         done_button.clicked.connect(self.close)
 
+        # Status display for operation feedback
+
         self.status_label = QLabel("")
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.status_label.setStyleSheet("color: #b00020;")
+
+        # Results display area configured as required by assignment
 
         self.results = QPlainTextEdit()
         self.results.setReadOnly(True)
         self.results.setPlaceholderText("Search results will appear here.")
         self.results.setMinimumHeight(240)
 
+        # Assemble all interface components
+
         layout.addWidget(title)
         layout.addSpacing(8)
         layout.addLayout(input_row)
         layout.addSpacing(6)
+
+        # Right-aligned done button for clear dialog completion
 
         done_row = QHBoxLayout()
         done_row.addStretch()
@@ -86,7 +105,15 @@ class SearchPostsDialog(QDialog):
         self.setLayout(layout)
 
     def _handle_search(self):
-        '''Search posts for a text fragment when the user submits the field.'''
+        '''Validates search term presence, checks blog context and user
+        permissions, and queries the controller for posts matching the
+        search criteria. Displays formatted results in the text area or
+        shows appropriate error messages for:
+        - Empty search terms
+        - Missing current blog context
+        - Authentication requirements
+        - No matching posts found
+        '''
         term = self.search_input.text().strip()
         if not term:
             self.status_label.setText("Enter text to search.")
@@ -106,7 +133,15 @@ class SearchPostsDialog(QDialog):
         self._populate_results(posts, empty_message="No posts contain that text.")
 
     def _handle_list_all(self):
-        '''List every post in the current blog.'''
+        '''Retrieves and displays all posts in the current blog.
+        
+        Checks blog context and user permissions, requests the complete
+        post list from the controller, and displays all posts with
+        detailed metadata in the text area. Shows appropriate error
+        messages for:
+        - Missing current blog context
+        - Authentication requirements
+        - Empty blog with no posts'''
         try:
             posts = self.controller.list_posts()
         except (IllegalAccessException, NoCurrentBlogException) as exc:
@@ -121,7 +156,11 @@ class SearchPostsDialog(QDialog):
         self._populate_results(posts, empty_message="No posts in this blog.")
 
     def _populate_results(self, posts, empty_message):
-        '''Render posts into the text area or show an empty-state message.'''
+        '''Converts each post object into a formatted text representation
+        including post number, title, creation/modification timestamps,
+        and content. Separates individual posts with visual dividers
+        for clear distinction. Handles timestamp formatting for both
+        string and datetime objects.'''
         self.results.clear()
         if not posts:
             self.status_label.setText(empty_message)

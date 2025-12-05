@@ -15,7 +15,13 @@ from PyQt6.QtWidgets import (
 
 
 class CreateBlogDialog(QDialog):
-    '''Dialog to create, update, or delete blogs from the GUI.'''
+    ''' Comprehensive blog administration dialog supporting full CRUD operations.
+    
+    Integrates creation, updating, and deletion functionality with intelligent
+    validation and user guidance. Features a dual-column layout showing both
+    input fields and existing data preview for rapid identification of
+    available IDs and existing blog attributes.
+    '''
     def __init__(self, controller, parent=None):
         super().__init__(parent)
         self.controller = controller
@@ -24,29 +30,37 @@ class CreateBlogDialog(QDialog):
         self._build_ui()
 
     def _build_ui(self):
-        '''Compose the form and action buttons for blog CRUD.'''
+        '''Organizes blog attributes into a four-field form with corresponding
+        preview columns showing existing data for entered IDs. Provides
+        four distinct action buttons for operation completion and blog
+        management functions with appropriate validation and feedback.'''
         outer = QVBoxLayout()
         outer.setAlignment(Qt.AlignmentFlag.AlignTop)
 
+        # Dialog title with prominent styling
         title = QLabel("Blog Manager")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title.setStyleSheet("font-size: 20px; font-weight: 600;")
 
+        # Main content card with form and controls
         form_card = QVBoxLayout()
         form_card.setContentsMargins(18, 14, 18, 14)
         form_card.setSpacing(12)
 
+        # Grid layout for dual-column form presentation
         form_grid = QGridLayout()
         form_grid.setVerticalSpacing(10)
         form_grid.setHorizontalSpacing(12)
         form_grid.setColumnStretch(1, 2)
         form_grid.setColumnStretch(2, 1)
 
+        # Blog ID input with numeric validation
         self.id_input = QLineEdit()
         self.id_input.setValidator(QIntValidator(0, 1_000_000))
         self.id_input.setPlaceholderText("e.g. 123")
         self.id_input.textChanged.connect(self._populate_existing)
 
+        # Blog attribute input fields
         self.name_input = QLineEdit()
         self.name_input.setPlaceholderText("Blog name")
 
@@ -56,6 +70,7 @@ class CreateBlogDialog(QDialog):
         self.email_input = QLineEdit()
         self.email_input.setPlaceholderText("owner@example.com")
 
+        # Preview labels for existing blog data
         self.existing_name = QLabel("-")
         self.existing_url = QLabel("-")
         self.existing_email = QLabel("-")
@@ -65,6 +80,8 @@ class CreateBlogDialog(QDialog):
             lbl.setMaximumWidth(200)
             lbl.setWordWrap(False)
 
+
+        # Form field arrangement with labels and preview columns
         form_grid.addWidget(QLabel("Blog ID:"), 0, 0)
         form_grid.addWidget(self.id_input, 0, 1)
         form_grid.addWidget(QLabel("Name:"), 1, 0)
@@ -77,10 +94,13 @@ class CreateBlogDialog(QDialog):
         form_grid.addWidget(self.email_input, 3, 1)
         form_grid.addWidget(self.existing_email, 3, 2)
 
+        # Status display for operation feedback
         self.status_label = QLabel("")
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.status_label.setStyleSheet("color: #b00020;")
 
+
+        # Action buttons for dialog control and blog operations
         button_row = QHBoxLayout()
         button_row.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -106,10 +126,13 @@ class CreateBlogDialog(QDialog):
         button_row.addSpacing(8)
         button_row.addWidget(delete_btn)
 
+
+        # Assemble form components
         form_card.addLayout(form_grid)
         form_card.addWidget(self.status_label)
         form_card.addLayout(button_row)
 
+        # Complete dialog assembly
         outer.addWidget(title)
         outer.addSpacing(8)
         outer.addLayout(form_card)
@@ -117,7 +140,12 @@ class CreateBlogDialog(QDialog):
         self.setLayout(outer)
 
     def _handle_create(self):
-        '''Create a blog when the ID is free and fields are populated.'''
+        '''Processes creation of a new blog with the entered attributes.
+        
+        Validates all input fields for completeness, checks for duplicate
+        blog IDs, verifies user authentication, and attempts to create
+        the blog through the controller. Provides visual feedback through
+        status messages and clears the form on successful creation.'''
         self.status_label.setStyleSheet("color: #b00020;")
         self.status_label.setText("")
 
@@ -158,7 +186,12 @@ class CreateBlogDialog(QDialog):
         self._clear_inputs()
 
     def _handle_update(self):
-        '''Update an existing blog's attributes.'''
+        '''Processes modification of an existing blog's attributes.
+        
+        Validates all input fields for completeness, verifies the blog
+        exists, checks user authentication and permissions, and attempts
+        to update the blog through the controller. Provides visual feedback
+        and clears the form on successful update.'''
         self.status_label.setStyleSheet("color: #b00020;")
         self.status_label.setText("")
 
@@ -186,7 +219,13 @@ class CreateBlogDialog(QDialog):
         self._clear_inputs()
 
     def _handle_delete(self):
-        '''Delete a blog after confirming the ID exists and user confirms.'''
+        '''Processes deletion of a blog after user confirmation.
+        
+        Validates the blog ID is provided, verifies the blog exists,
+        checks user authentication and permissions, presents a confirmation
+        dialog, and attempts to delete the blog through the controller.
+        Provides visual feedback and clears the form on successful deletion.
+        '''
         self.status_label.setStyleSheet("color: #b00020;")
         self.status_label.setText("")
 
@@ -230,7 +269,11 @@ class CreateBlogDialog(QDialog):
         self._clear_inputs()
 
     def _clear_inputs(self):
-        '''Reset inputs and existing labels to defaults.'''
+        '''Resets all input fields to their initial empty state.
+        
+        Clears all form fields, resets preview displays to default values,
+        and sets focus to the ID input field for rapid sequential operations.
+        Maintains clean interface state between operations.'''
         self.id_input.clear()
         self.name_input.clear()
         self.url_input.clear()
@@ -239,7 +282,12 @@ class CreateBlogDialog(QDialog):
         self._set_existing("-", "-", "-")
 
     def _populate_existing(self):
-        '''Show existing blog data (if any) beside the inputs while typing an ID.'''
+        ''' Dynamically updates preview columns based on entered blog ID.
+        
+        Monitors changes to the ID input field and queries the controller
+        for existing blog data when a valid numeric ID is detected. Updates
+        preview labels to show existing blog attributes or availability
+        status, providing immediate feedback on ID conflicts.'''
         id_text = self.id_input.text().strip()
         if not id_text:
             self._set_existing("-", "-", "-")
@@ -261,6 +309,7 @@ class CreateBlogDialog(QDialog):
         self._set_existing(blog.name, blog.url, blog.email)
 
     def _set_existing(self, name, url, email):
+        '''Updates preview labels with existing blog attribute values.'''
         self.existing_name.setText(name)
         self.existing_url.setText(url)
         self.existing_email.setText(email)

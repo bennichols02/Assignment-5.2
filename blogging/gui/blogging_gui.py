@@ -119,7 +119,9 @@ class BloggingGUI(QMainWindow):
         self.create_dialog.show()
 
     def open_edit_dialog(self):
-        '''Open non-modal editor for the current blog context.'''
+        '''Opens the blog editing interface for the currently selected blog.
+        Only available when a blog has been set as the current working blog.
+        Provides access to post management and search functionality.'''
         try:
             current = self.controller.get_current_blog()
         except Exception:
@@ -131,17 +133,23 @@ class BloggingGUI(QMainWindow):
 
 
 class LoginPage(QWidget):
-    '''Simple login form shown on startup.'''
+    '''Authentication interface for user login.
+    Presents a simple form for username and password entry with validation
+    and error feedback. Provides access to system exit functionality.'''
     def __init__(self, on_login):
+        '''Initializes the login page with authentication callback.'''
         super().__init__()
         self.on_login = on_login
         self._build_ui()
 
     def _build_ui(self):
-        '''Compose the login form layout.'''
+        '''Constructs the login interface layout with all visual components.
+        Arranges form elements, buttons, and status display in a centered,
+        vertically organized layout.'''
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
+        # Application title and description
         title = QLabel("Blogging System")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title.setStyleSheet("font-size: 20px; font-weight: 600;")
@@ -160,7 +168,8 @@ class LoginPage(QWidget):
         self.password_input.setPlaceholderText("password")
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
         self.password_input.returnPressed.connect(self._emit_login)
-
+        
+        # Form layout for credential input
         form_layout.addRow("Username:", self.username_input)
         form_layout.addRow("Password:", self.password_input)
 
@@ -170,14 +179,18 @@ class LoginPage(QWidget):
         login_button.clicked.connect(self._emit_login)
         button_row.addWidget(login_button)
 
+        # Action buttons for login and application exit
         quit_button = QPushButton("Quit")
         quit_button.clicked.connect(QApplication.instance().quit)
         button_row.addWidget(quit_button)
 
+        # Status display for authentication feedback
         self.status_label = QLabel("")
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.status_label.setStyleSheet("color: #b00020;")
 
+        
+        # Assemble all components in the layout
         layout.addWidget(title)
         layout.addWidget(subtitle)
         layout.addSpacing(10)
@@ -186,8 +199,9 @@ class LoginPage(QWidget):
         layout.addLayout(button_row)
         layout.addSpacing(10)
         layout.addWidget(self.status_label)
-        layout.addStretch()
+        layout.addStretch()     
 
+        # Container for centered presentation
         container = QWidget()
         container.setLayout(layout)
         outer = QVBoxLayout()
@@ -197,7 +211,8 @@ class LoginPage(QWidget):
         self.setLayout(outer)
 
     def _emit_login(self):
-        '''Collect credentials and pass them to the callback.'''
+        '''Collects entered credentials and forwards them to the login handler.
+        Triggered by login button click or Enter key press in password field.'''
         username = self.username_input.text().strip()
         password = self.password_input.text()
         self.on_login(username, password)
@@ -210,8 +225,11 @@ class LoginPage(QWidget):
 
 
 class HomePage(QWidget):
-    '''Landing page after login with navigation actions.'''
+    '''Main navigation interface displayed after successful authentication.
+    Provides access to all blogging system functionality through organized
+    button groups and displays current session information.'''
     def __init__(self, controller, on_logout, on_search_blog, on_create_blog, on_edit_blog):
+        '''Initializes the home page with navigation callbacks.'''
         super().__init__()
         self.controller = controller
         self.on_logout = on_logout
@@ -221,18 +239,23 @@ class HomePage(QWidget):
         self._build_ui()
 
     def _build_ui(self):
-        '''Compose the home view layout and buttons.'''
+        '''Constructs the home page layout with user information display,
+        current blog selection interface, and application navigation buttons.
+        Organizes functionality into logical groups for intuitive user flow.'''
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
+        # User welcome display
         self.welcome_label = QLabel()
         self.welcome_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.welcome_label.setStyleSheet("font-size: 18px; font-weight: 600;")
-
+        
+        # Current blog status display
         self.current_blog_label = QLabel("Current blog: None")
         self.current_blog_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.current_blog_label.setStyleSheet("color: #555;")
 
+        # Blog selection interface
         header_row = QVBoxLayout()
         header_row.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -254,6 +277,7 @@ class HomePage(QWidget):
         header_row.addSpacing(6)
         header_row.addWidget(choose_button, alignment=Qt.AlignmentFlag.AlignCenter)
 
+        # Main navigation buttons
         button_row = QVBoxLayout()
         button_row.setAlignment(Qt.AlignmentFlag.AlignCenter)
         button_row.setSpacing(12)
@@ -286,7 +310,8 @@ class HomePage(QWidget):
         logout_button.setToolTip("End your session and return to login")
         logout_button.setMinimumWidth(170)
         logout_button.setMinimumHeight(42)
-
+        
+        # Grid layout for button organization
         grid = QGridLayout()
         grid.setHorizontalSpacing(16)
         grid.setVerticalSpacing(12)
@@ -303,10 +328,12 @@ class HomePage(QWidget):
 
         button_row.addLayout(row_wrapper)
 
+        # Status display for operation feedback
         self.status_label = QLabel("")
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.status_label.setStyleSheet("color: #b00020;")
 
+        # Assemble all components
         layout.addWidget(self.welcome_label)
         layout.addSpacing(8)
         layout.addLayout(header_row)
@@ -322,10 +349,14 @@ class HomePage(QWidget):
         self.welcome_label.setText(f"Welcome, {username}")
 
     def set_status(self, message: str):
+        '''Updates the operation status message displayed to the user.'''
         self.status_label.setText(message)
 
     def update_current_blog(self, blog):
-        '''Reflect the selected blog in the UI and toggle edit availability.'''
+        '''Updates the interface to reflect the currently selected blog.
+        Enables or disables the edit button based on blog selection
+        and updates the current blog display label with relevant information.
+        '''
         if not blog:
             self.current_blog_label.setText("Current blog selected: None")
             self.edit_button.setEnabled(False)
@@ -340,7 +371,11 @@ class HomePage(QWidget):
         )
 
     def _handle_set_current_blog(self):
-        '''Read the typed blog ID and set it as current via the controller.'''
+        '''Processes user request to set a blog as the current working blog.
+        
+        Validates the entered blog ID, attempts to set it as current through
+        the controller, and updates the interface accordingly. Provides
+        appropriate error feedback for invalid IDs or permission issues.'''
         self.status_label.setText("")
         id_text = self.current_blog_input.text().strip()
         if not id_text:
@@ -362,6 +397,12 @@ class HomePage(QWidget):
 
 
 def main():
+    """
+    Application entry point for GUI mode execution.
+    
+    Initializes the PyQt6 application framework, creates the main window,
+    and starts the event loop for user interaction.
+    """
     app = QApplication(sys.argv)
     window = BloggingGUI()
     window.show()
